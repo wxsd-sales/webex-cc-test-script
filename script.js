@@ -162,6 +162,7 @@ class SupervisorControlsCAA extends HTMLElement {
 
       const myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Authorization", "Bearer " + access_token);
 
       const raw = JSON.stringify({
         query: `
