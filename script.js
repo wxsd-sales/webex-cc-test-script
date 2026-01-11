@@ -128,8 +128,7 @@ class SupervisorControlsCAA extends HTMLElement {
     var triggerurl =
       "https://europe-west2-token-service-413010.cloudfunctions.net/token-service";
     var tokenname = "wxcctoken";
-    // GetAccessToken();
-    GetGlobalVariables("hi");
+    GetAccessToken();
 
     function GetAccessToken() {
       const myHeaders = new Headers();
@@ -150,9 +149,7 @@ class SupervisorControlsCAA extends HTMLElement {
 
     function GetGlobalVariables(result) {
       var searchstring;
-      // access_token = result.token;
-      access_token =
-        "YzZmYTk2ZDgtMGI4Ny00YzAxLWI3YWUtMTFkOWMzMTU2NmVmZDc3ZDVjMzgtYmY1_PE93_fc5af61b-06a3-4122-be5c-bb344cffffdc";
+      access_token = result.token;
 
       const myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
