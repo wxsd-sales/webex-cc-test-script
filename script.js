@@ -134,7 +134,7 @@ class SupervisorControlsCAA extends HTMLElement {
       const myHeaders = new Headers();
       const ALLOWED_ORIGIN = "https://desktop.wxcc-eu1.cisco.com";
       myHeaders.append("x-token-passphrase", passphrase);
-      myHeaders.append("Access-Control-Allow-Origin", ALLOWED_ORIGIN);
+      myHeaders.append("Access-Control-Allow-Origin", "*");
 
       const requestOptions = {
         method: "GET",
