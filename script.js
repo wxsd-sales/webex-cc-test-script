@@ -1,12 +1,8 @@
 const style = document.createElement("style");
-const taskViewerTemplate = document.createElement("template");
+const template = document.createElement("template");
 
 style.textContent = `
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
-
-body {
-  font-family: 'Roboto', sans-serif;
-}
 
 table {
   border-collapse: collapse;
@@ -39,10 +35,11 @@ tr:nth-child(odd) {
 h2 {
   color: #333;
   font-weight: 700;
+  font-family: 'Roboto', sans-serif;
 }
 `;
 
-taskViewerTemplate.innerHTML = `
+template.innerHTML = `
   <div style="padding:10px">
     <h2>Task Viewer</h2>
     <div id="task-table-container"></div>
@@ -53,19 +50,20 @@ class TaskViewer extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
+    this.timeoutID = undefined;
   }
 
   connectedCallback() {
-    this.shadowRoot.appendChild(style.cloneNode(true));
-    this.shadowRoot.appendChild(taskViewerTemplate.content.cloneNode(true));
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
+    this.shadowRoot.appendChild(style);
 
-    var org = this.orgId || "fc5af61b-06a3-4122-be5c-bb344cffffdc";
-    var access_token = this.accessToken;
+    var org = this.orgId;
     var context = this.shadowRoot;
+    var passphrase = this.passPhrase;
+    var access_token;
     var triggerurl =
       "https://europe-west2-token-service-413010.cloudfunctions.net/token-service";
     var tokenname = "wxcctoken";
-    var passphrase = this.passPhrase;
 
     GetAccessToken();
 
@@ -78,6 +76,7 @@ class TaskViewer extends HTMLElement {
         headers: myHeaders,
         redirect: "follow",
       };
+      console.log(requestOptions);
 
       fetch(triggerurl + "?name=" + tokenname, requestOptions)
         .then((response) => response.text())
@@ -87,6 +86,7 @@ class TaskViewer extends HTMLElement {
 
     function FetchTasks(result) {
       access_token = result.token;
+      console.log("[TASKVIEWER] - Access token retrieved");
 
       const myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
@@ -145,6 +145,7 @@ class TaskViewer extends HTMLElement {
         body: raw,
         redirect: "follow",
       };
+      console.log(requestOptions);
 
       fetch(
         "https://api.wxcc-eu1.cisco.com/search?orgId=" + org,
@@ -156,6 +157,7 @@ class TaskViewer extends HTMLElement {
     }
 
     function DisplayTasks(result, context) {
+      console.log("[TASKVIEWER] - Got result:", result);
       const tableContainer = context.getElementById("task-table-container");
 
       if (!result.data || !result.data.task || !result.data.task.tasks) {
@@ -183,7 +185,7 @@ class TaskViewer extends HTMLElement {
 
       tasks.forEach((task, index) => {
         const name = task.customer?.name || "N/A";
-        const channel = "email"; // From the query filter
+        const channel = "email";
         const time = task.createdTime
           ? new Date(task.createdTime).toLocaleString()
           : "N/A";
@@ -205,19 +207,15 @@ class TaskViewer extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ["orgId", "accessToken", "passPhrase"];
+    return ["orgid", "passphrase"];
   }
 
   get orgId() {
-    return this.getAttribute("orgId");
-  }
-
-  get accessToken() {
-    return this.getAttribute("accessToken");
+    return this.getAttribute("orgid");
   }
 
   get passPhrase() {
-    return this.getAttribute("passPhrase");
+    return this.getAttribute("passphrase");
   }
 }
 
