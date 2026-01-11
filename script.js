@@ -124,7 +124,8 @@ class SupervisorControlsCAA extends HTMLElement {
     var context = this.shadowRoot;
     var username = this.User;
     var passphrase = this.passPhrase;
-    var access_token = this.accessToken;
+    var access_token =
+      "YzZmYTk2ZDgtMGI4Ny00YzAxLWI3YWUtMTFkOWMzMTU2NmVmZDc3ZDVjMzgtYmY1_PE93_fc5af61b-06a3-4122-be5c-bb344cffffdc";
     var triggerurl =
       "https://europe-west2-token-service-413010.cloudfunctions.net/token-service";
     var tokenname = "wxcctoken";
