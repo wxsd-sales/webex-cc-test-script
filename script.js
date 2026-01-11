@@ -150,41 +150,72 @@ class SupervisorControlsCAA extends HTMLElement {
     function GetGlobalVariables(result) {
       var searchstring;
       access_token = result.token;
-      console.log("rkanthet: access_token", access_token);
-      //  access_token="OTAwMGYwMTAtMGNkNy00ZWViLWExZWEtMTA1NzhjNTZmMmMyMTk4Zjk1ZDktOTIx_PF84_fb795e2e-f22c-4999-aa54-13e4b91a311f";
-      if (username == null) {
-        searchstring = "";
-      } else {
-        username = "CAA";
-        searchstring = "&search=" + username;
-      }
 
       const myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
       myHeaders.append("Authorization", "Bearer " + access_token);
 
-      const raw = JSON.stringify({});
+      const raw = JSON.stringify({
+        query: `
+{
+  task(
+    from: "1767874520000"
+    to: "1767961693000"
+    filter:{ 
+      and: [
+        { channelType: { equals: email } }
+        { stringGlobalVariables: {
+          name: { equals: "RefSinistre"}
+          value: { equals: "S0133"}
+        }}
+      ]
+    }
+  ) {
+    tasks {
+      id 
+      status
+      createdTime
+      customer{
+        name
+      }
+      channelMetaData{
+        email{
+          subject
+        }
+      }
+      stringGlobalVariables(name: "RefSinistre") {
+        name
+        value
+      }
+      TacheFille: stringGlobalVariables(name: "TacheFille") {
+        name
+        value
+      }
+      DateReactivation: stringGlobalVariables(name: "DateReactivationTache") {
+        name
+        value
+      }
+    }
+  }
+}
+`,
+        variables: {},
+      });
 
       const requestOptions = {
-        method: "GET",
+        method: "POST",
         headers: myHeaders,
+        body: raw,
         redirect: "follow",
       };
-      console.log(requestOptions);
 
       fetch(
-        "https://api.wxcc-eu1.cisco.com/organization/" +
-          org +
-          "/v2/cad-variable?filter=active==true;agentViewable==false" +
-          searchstring,
+        "https://api.wxcc-eu1.cisco.com/search?orgId=" + org,
         requestOptions
       )
-        //    fetch("https://api.wxcc-eu1.cisco.com/organization/"+org+"/v2/cad-variable?filter=active==true;agentViewable==false"+searchstring, requestOptions)
-
-        //      fetch("https://api.wxcc-eu1.cisco.com/organization/"+org+"/v2/cad-variable"+searchstring, requestOptions)
         .then((response) => response.text())
-        .then((result) => GotVariables(JSON.parse(result), context))
-        .catch((error) => console.log("[TEXTWIDGET] - ERROR - ", error));
+        .then((result) => console.log("rkanthet: result", JSON.parse(result)))
+        .catch((error) => console.log("[TASKVIEWER] - ERROR - ", error));
     }
 
     function GotVariables(result, context) {
