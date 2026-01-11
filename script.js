@@ -159,11 +159,9 @@ class SupervisorControlsCAA extends HTMLElement {
     function GetGlobalVariables(result) {
       var searchstring;
       access_token = result.token;
-      ALLOWED_ORIGIN = "https://desktop.wxcc-eu1.cisco.com";
 
       const myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
-      myHeaders.append("Authorization", "Bearer " + access_token);
 
       const raw = JSON.stringify({
         query: `
