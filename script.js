@@ -124,8 +124,7 @@ class SupervisorControlsCAA extends HTMLElement {
     var context = this.shadowRoot;
     var username = this.User;
     var passphrase = this.passPhrase;
-    var access_token =
-      "YzZmYTk2ZDgtMGI4Ny00YzAxLWI3YWUtMTFkOWMzMTU2NmVmZDc3ZDVjMzgtYmY1_PE93_fc5af61b-06a3-4122-be5c-bb344cffffdc";
+    var access_token = this.accessToken;
     var triggerurl =
       "https://europe-west2-token-service-413010.cloudfunctions.net/token-service";
     var tokenname = "wxcctoken";
@@ -141,9 +140,7 @@ class SupervisorControlsCAA extends HTMLElement {
 
     function GetAccessToken() {
       const myHeaders = new Headers();
-      // const ALLOWED_ORIGIN = "https://desktop.wxcc-eu1.cisco.com";
       myHeaders.append("x-token-passphrase", passphrase);
-      // myHeaders.append("Access-Control-Allow-Origin", "*");
 
       const requestOptions = {
         method: "GET",
