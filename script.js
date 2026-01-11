@@ -124,11 +124,19 @@ class SupervisorControlsCAA extends HTMLElement {
     var context = this.shadowRoot;
     var username = this.User;
     var passphrase = this.passPhrase;
-    var access_token;
+    var access_token = this.accessToken;
     var triggerurl =
       "https://europe-west2-token-service-413010.cloudfunctions.net/token-service";
     var tokenname = "wxcctoken";
-    GetAccessToken();
+
+    // If access token is provided directly, skip token service
+    if (access_token) {
+      console.log("[TEXTWIDGET] - Using provided access token");
+      GetGlobalVariables({ token: access_token });
+    } else {
+      console.log("[TEXTWIDGET] - Fetching token from service");
+      GetAccessToken();
+    }
 
     function GetAccessToken() {
       const myHeaders = new Headers();
