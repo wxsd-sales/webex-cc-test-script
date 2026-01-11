@@ -219,6 +219,7 @@ class SupervisorControlsCAA extends HTMLElement {
     }
 
     function DisplayTasks(result, context) {
+      console.log("rkanthet: result", result);
       const tableContainer = context.getElementById("task-table-container");
 
       if (!result.data || !result.data.task || !result.data.task.tasks) {
