@@ -81,6 +81,7 @@ style.textContent = `
 template.innerHTML = `
 
       <div class="column" style="padding:10px">
+      <p>Hello world </p>
         <div id="table-container"></div>   
       </div>
       <div class="column" style="padding:10px">
