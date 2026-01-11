@@ -150,6 +150,7 @@ class SupervisorControlsCAA extends HTMLElement {
     function GetGlobalVariables(result) {
       var searchstring;
       access_token = result.token;
+      console.log("rkanthet: access_token", access_token);
       //  access_token="OTAwMGYwMTAtMGNkNy00ZWViLWExZWEtMTA1NzhjNTZmMmMyMTk4Zjk1ZDktOTIx_PF84_fb795e2e-f22c-4999-aa54-13e4b91a311f";
       if (username == null) {
         searchstring = "";
